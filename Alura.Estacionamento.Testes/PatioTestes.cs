@@ -16,6 +16,7 @@ namespace Alura.Estacionamento.Testes
     {
         public Patio patio;
         public Veiculo veiculo;
+        public Operador operador;
         public ITestOutputHelper saidaConsoleTeste;
 
         public PatioTestes(ITestOutputHelper _saidaConsoleTeste)
@@ -24,6 +25,7 @@ namespace Alura.Estacionamento.Testes
             saidaConsoleTeste.WriteLine("Construtor invocado.");
             patio = new Patio();
             veiculo = new Veiculo();
+            operador = new Operador();
         }
 
         [Fact(DisplayName ="Valida faturamento do estacionamento com 1 veículo.")]
@@ -32,6 +34,8 @@ namespace Alura.Estacionamento.Testes
             //Arrange
             //var patio = new Patio();
             //var veiculo = new Veiculo();
+            operador.Nome = "Operas";
+            patio.OperadorPatio = operador;
             veiculo.Proprietario = "Farias";
             veiculo.Tipo = TipoVeiculo.Automovel;
             veiculo.Cor = "Azul";
@@ -58,6 +62,8 @@ namespace Alura.Estacionamento.Testes
             //Arrange
             //var patio = new Patio();
             //var veiculo = new Veiculo();
+            operador.Nome = "Operas";
+            patio.OperadorPatio = operador;
             veiculo.Proprietario = proprietario;
             veiculo.Placa = placa;
             veiculo.Cor = cor;
@@ -80,6 +86,8 @@ namespace Alura.Estacionamento.Testes
             //Arrange
             //var patio = new Patio();
             //var veiculo = new Veiculo();
+            operador.Nome = "Operas";
+            patio.OperadorPatio = operador;
             veiculo.Proprietario = proprietario;
             veiculo.Placa = placa;
             veiculo.Cor = cor;
@@ -88,10 +96,10 @@ namespace Alura.Estacionamento.Testes
             patio.RegistrarEntradaVeiculo(veiculo);
 
             //Act
-            var consultado = patio.PesquisaVeiculo(placa);
+            var consultado = patio.PesquisaVeiculo(veiculo.IdTicket);
 
             //Assert
-            Assert.Equal(placa, consultado.Placa);
+            Assert.Contains("Ticket Estacionamento Alura", consultado.Ticket);
         }
 
         public void Dispose()

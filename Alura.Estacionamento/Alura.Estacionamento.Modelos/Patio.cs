@@ -11,12 +11,15 @@ namespace Alura.Estacionamento.Modelos
 {
     public class Patio
     {
-       
         public Patio()
         {
             Faturado = 0;
             veiculos = new List<Veiculo>();
         }
+
+        private Operador _operadorPatio;
+        public Operador OperadorPatio { get => _operadorPatio; set => _operadorPatio = value; }
+
         private List<Veiculo> veiculos;
         private double faturado;
         public double Faturado { get => faturado; set => faturado = value; }
@@ -34,7 +37,8 @@ namespace Alura.Estacionamento.Modelos
 
         public void RegistrarEntradaVeiculo(Veiculo veiculo)
         {
-            veiculo.HoraEntrada = DateTime.Now;            
+            veiculo.HoraEntrada = DateTime.Now;
+            this.GerarTicket(veiculo);
             this.Veiculos.Add(veiculo);            
         }
 
@@ -84,10 +88,10 @@ namespace Alura.Estacionamento.Modelos
             return informacao;
         }
 
-        public Veiculo PesquisaVeiculo(string placa)
+        public Veiculo PesquisaVeiculo(string idTicket)
         {
             var encontrado = (from veiculo in this.Veiculos
-                              where veiculo.Placa == placa
+                              where veiculo.IdTicket == idTicket
                               select veiculo).SingleOrDefault();
             return encontrado;
         }
@@ -99,6 +103,18 @@ namespace Alura.Estacionamento.Modelos
                                select veiculo).SingleOrDefault();
             veiculoTemp.AlterarDados(veiculoAlterado);
             return veiculoTemp;
+        }
+
+        private string GerarTicket(Veiculo veiculo)
+        {
+            veiculo.IdTicket = Guid.NewGuid().ToString();
+            string ticket = $"### Ticket Estacionamento Alura ###\n" +
+                $"--> Identificador {veiculo.IdTicket}" +
+                $"--> Data/Hora da Entrada: {DateTime.Now}" +
+                $"--> Placa do veículo: {veiculo.Placa}" +
+                $"--> Operador Pátio {this.OperadorPatio.Nome}, {this.OperadorPatio.Matricula}";
+            veiculo.Ticket = ticket;
+            return ticket;
         }
     }
 }

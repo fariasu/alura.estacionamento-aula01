@@ -7,6 +7,7 @@ namespace Alura.Estacionamento.Testes
     public class VeiculoTestes : IDisposable
     {
         private Veiculo veiculo;
+        private Operador operador;
         public ITestOutputHelper saidaConsoleTeste;
 
         public VeiculoTestes(ITestOutputHelper _saidaConsoleTeste)
@@ -14,6 +15,7 @@ namespace Alura.Estacionamento.Testes
             saidaConsoleTeste = _saidaConsoleTeste;
             saidaConsoleTeste.WriteLine("Construtor invocado.");
             veiculo = new Veiculo();
+            operador = new Operador();
         }
 
         [Fact(DisplayName ="Testa o método Acelerar da classe Veículo com o parâmetro 10.")]
@@ -66,6 +68,8 @@ namespace Alura.Estacionamento.Testes
             //Arrange
             var patio = new Patio();
             //var veiculo = new Veiculo();
+            operador.Nome = "Operas";
+            patio.OperadorPatio = operador;
             veiculo.Proprietario = "Farias";
             veiculo.Placa = "AAA-1234";
             veiculo.Cor = "Preto";
